@@ -1,8 +1,73 @@
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import discord
+
+
+def add_days_to_current_date(days: int | None) -> datetime | None:
+    """
+    Convert an integer (number of days) into a datetime object
+    that is equal to the current time plus the number of days added to it.
+
+    Parameters:
+    ----------
+    days : int
+        The number of days to add to the current date.
+
+    Returns:
+    -------
+    datetime
+        The datetime object that is equal to the current time plus the number of days added to it.
+    """
+    current_date = datetime.now(UTC)
+    return current_date + timedelta(days=days) if days is not None else None
+
+
+def convert_str_to_datetime(time_str: str) -> datetime | None:
+    """
+    Converts a formatted time string with 'd' for days, 'h' for hours, and 'm' for minutes into a datetime object.
+    Any unexpected format leads to returning None.
+
+    Parameters:
+    ----------
+    time_str : str
+        The formatted time string to convert to a datetime object.
+
+    Returns:
+    -------
+    datetime | None
+        The datetime object from the formatted time string.
+    """
+
+    # Lowercase to standardize the input
+    time_str = time_str.lower()
+
+    # Time conversion factors from units to seconds
+    time_units = {
+        "d": 86400,  # Days to seconds
+        "h": 3600,  # Hours to seconds
+        "m": 60,  # Minutes to seconds
+    }
+
+    total_seconds = 0
+    current_value = 0
+
+    for char in time_str:
+        if char.isdigit():
+            # Build the current number
+            current_value = current_value * 10 + int(char)
+        elif char in time_units:
+            # If the unit is known, update total_seconds
+            if current_value == 0:
+                return None  # No number specified for the unit, thus treat as invalid input
+            total_seconds += current_value * time_units[char]
+            current_value = 0  # Reset for next number-unit pair
+        else:
+            # Unknown character indicates an invalid format
+            return None
+
+    return None if current_value != 0 else datetime.now(UTC) + timedelta(seconds=total_seconds)
 
 
 def convert_to_seconds(time_str: str) -> int:

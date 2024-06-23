@@ -1,9 +1,12 @@
 from enum import Enum
 
 
-class InfractionType(Enum):
-    BAN = "ban"
-    UNBAN = "unban"
-    WARN = "warn"
-    KICK = "kick"
-    TIMEOUT = "timeout"
+class CaseType(Enum):
+    BAN = "BAN"
+    HACK_BAN = "HACK_BAN"
+    TEMP_BAN = "TEMP_BAN"
+    UNBAN = "UNBAN"
+    WARN = "WARN"
+    KICK = "KICK"
+    TIMEOUT_ADD = "TIMEOUT_ADD"
+    TIMEOUT_REMOVE = "TIMEOUT_REMOVE"

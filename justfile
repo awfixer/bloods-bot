@@ -16,7 +16,7 @@ migrate-prisma:
 # Run the bot
 run:
     poetry run python tux/main.py
-    
+
 # Lint the code using ruff
 lint:
     poetry run ruff check .

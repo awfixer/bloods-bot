@@ -33,6 +33,7 @@ error_map: dict[type[Exception], str] = {
     commands.MissingRequiredAttachment: "Missing required attachment.",
     commands.NotOwner: "User not in sudoers file. This incident will be reported. (Not Owner)",
     commands.BotMissingPermissions: "User not in sudoers file. This incident will be reported. (Bot Missing Permissions)",
+    commands.MemberNotFound: "Member not found. Please try again.",
 }
 
 

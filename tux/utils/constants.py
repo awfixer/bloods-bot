@@ -14,19 +14,21 @@ config = json.loads(config_file.read_text())
 
 class Constants:
     # Permission constants
-    ROLES: Final[dict[str, int]] = config["ROLES"]
+    ROLES: Final[dict[str, int]] = config.get("ROLES", {})
     BOT_OWNER_ID: Final[int] = int(os.getenv("BOT_OWNER_ID", 0))
 
     # Production constants
     PROD_TOKEN: Final[str] = os.getenv("PROD_TOKEN", "")
     PROD_PREFIX: Final[str] = config["PREFIX"]["PROD"]
     PROD_COG_IGNORE_LIST: Final[set[str]] = set(os.getenv("PROD_COG_IGNORE_LIST", "").split(","))
+    PROD_GUILD_ID: Final[int] = int(config["GUILD_ID"]["PROD"])
 
     # DEV constants
     DEV: Final[str | None] = os.getenv("DEV")
     DEV_TOKEN: Final[str] = os.getenv("DEV_TOKEN", "")
     DEV_PREFIX: Final[str] = config["PREFIX"]["DEV"]
     DEV_COG_IGNORE_LIST: Final[set[str]] = set(os.getenv("DEV_COG_IGNORE_LIST", "").split(","))
+    DEV_GUILD_ID: Final[int] = int(config["GUILD_ID"]["DEV"])
 
     # Sentry-related constants
     SENTRY_URL: Final[str | None] = os.getenv("SENTRY_URL")
@@ -46,20 +48,20 @@ class Constants:
     )
 
     # Channel constants
-    LOG_CHANNELS: Final[dict[str, int]] = config["LOG_CHANNELS"].copy()
-    if DEV and DEV.lower() == "true":
-        for key in LOG_CHANNELS:
-            LOG_CHANNELS[key] = LOG_CHANNELS["DEV"]
+    prod_log_channels: Final[dict[str, int]] = config["PROD_LOG_CHANNELS"]
+    dev_log_channels: Final[dict[str, int]] = config["DEV_LOG_CHANNELS"]
+
+    LOG_CHANNELS = dev_log_channels if DEV and DEV.lower() == "true" else prod_log_channels
 
     # Temp VC constants
     TEMPVC_CATEGORY_ID: Final[str | None] = os.getenv("TEMPVC_CATEGORY_ID")
     TEMPVC_CHANNEL_ID: Final[str | None] = os.getenv("TEMPVC_CHANNEL_ID")
 
     # Color constants
-    EMBED_STATE_COLORS: Final[dict[str, int]] = config["EMBED_STATE_COLORS"]
+    COLORS: Final[dict[str, int]] = config["COLORS"]
 
     # Icon constants
-    EMBED_STATE_ICONS: Final[dict[str, str]] = config["EMBED_STATE_ICONS"]
+    ICONS: Final[dict[str, str]] = config["ICONS"]
 
     # Unicode constants
     UNICODE: Final[dict[str, str]] = config["UNICODE"]
